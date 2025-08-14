@@ -5,89 +5,70 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: melis <melis@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 03:47:11 by melis             #+#    #+#             */
-/*   Updated: 2025/08/11 02:29:08 by melis            ###   ########.fr       */
+/*   Created: 2025/08/14 01:05:24 by melis             #+#    #+#             */
+/*   Updated: 2025/08/14 04:10:11 by melis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_free_str(char *str, char *string)
+static char *ft_get_back(char *str)
 {
-	char	*temp;
-
-	temp = ft_strjoin(str, string);
-	free(str);
-	return (temp);
-}
-
-static char *ft_save(char *str)
-{
-    int i;
-    int j;
     char *res;
-    
+	int i;
+	
+    if (!str)
+        return (NULL);
     i = 0;
-    j = 0;
-    while(str[i] && str[i] != '\n')
+    while (str[i] && str[i] != '\n')
         i++;
     if (!str[i])
     {
         free(str);
         return (NULL);
     }
-    i++;
-    while (str[i + j])
-        j++;
-    res = malloc(sizeof(char) * (j + 1));
-    if (!res)
-        return (NULL);
-    j = 0;
-    while (str[i] != '\0')
-        res[j++] = str[i++];
-    res[j] = '\0';
+    i++; 
+    res = ft_substr(str, i, ft_strlen(str + i));
     free(str);
-    return (res);
+    return res;
 }
 
-static char *ft_line(char *str)
-{
-    int i;
-    char *res;
 
-    i = 0;
-    if (!str[i])
-        return (NULL);
-    while (str[i] != '\0' && str[i] != '\n')
-        i++;
-    res = malloc(i + 2);
-    if (!res)
-        return (NULL);
-    i = 0;
+static char	*ft_line(char *str)
+{
+    char *res;
+	int i;
+	int j;
+
+    if (!str || !*str)
+        return NULL;
+	i = 0;
     while (str[i] && str[i] != '\n')
-    {
-        res[i] = str[i];
         i++;
-    }
     if (str[i] == '\n')
-    {
-        res[i] = '\n';
         i++;
-    } 
+    res = malloc(i + 1);
+    if (!res)
+        return NULL;
+    j = 0;
+    while (j < i)
+    {
+        res[j] = str[j];
+        j++;
+    }
     res[i] = '\0';
     return (res);
 }
 
-static char *ft_read(int fd, char *str)
+
+static char	*ft_read_line(int fd, char *str, int read_bytes)
 {
-    char    *string;
-    int     read_bytes;
-    
-    string = malloc(BUFFER_SIZE + 1);
-    if (!string)
-        return (NULL);
-    read_bytes = 1;
-    while (!ft_strchr(str, '\n') && read_bytes != 0)
+	char	*string;
+	
+	string = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!string)
+		return (NULL);
+	while ((!ft_strchr(str, '\n')) && read_bytes != 0)
     {
         read_bytes = read(fd, string, BUFFER_SIZE);
         if (read_bytes == -1)
@@ -96,28 +77,31 @@ static char *ft_read(int fd, char *str)
             return (NULL);
         }
         string[read_bytes] = '\0';
-        str = ft_free_str(str, string);
+        str = ft_strjoin(str, string);
         if (!str)
         {
             free(string);
             return (NULL);
         }
     }
-    free(string);
+	free(string);
     return (str);
 }
 
-char *get_next_line(int fd)
-{
-    static char *str;
-    char        *line;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return (NULL);
-    str = ft_read(fd, str);
-    if (!str)
-        return (NULL);
-    line = ft_line(str);
-    str = ft_save(str);
-    return (line);
+char	*get_next_line(int fd)
+{
+	char static	*str;
+	char		*line;
+	int			read_bytes;
+	
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	read_bytes = 1;
+	str = ft_read_line(fd, str, read_bytes);
+	if (!str)
+		return (NULL);
+	line = ft_line(str);
+	str = ft_get_back(str);
+	return (line);
 }

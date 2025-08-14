@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: melis <melis@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 03:47:07 by melis             #+#    #+#             */
-/*   Updated: 2025/08/10 16:24:26 by melis            ###   ########.fr       */
+/*   Created: 2025/08/14 01:05:03 by melis             #+#    #+#             */
+/*   Updated: 2025/08/14 04:16:41 by melis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "get_next_line.h"
 
@@ -19,7 +18,6 @@ int	ft_strlen(char *s)
 
 	if (!s)
 		return (0);
-
 	i = 0;
 	while (s[i] != '\0')
 		i++;
@@ -44,35 +42,58 @@ char	*ft_strchr(char *s, int c)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*start;
-	char	*str;
-	int		len1;
-	int		len2;
+	char	*result;
+	size_t	i;
+	size_t	s1_len;
+	size_t	s2_len;
 
-	len1 = 0;
-	len2 = 0;
-	if (s1)
-		len1 = ft_strlen(s1);
-	if (s2)
-		len2 = ft_strlen(s2);
-
-	str = (char *)malloc(len1 + len2 + 1);
-	if (!str)
+	if (!s1 && !s2)
 		return (NULL);
-
-	start = str;
-
-	if (s1)
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	result = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	i = 0;
+	while (i < s1_len + s2_len)
 	{
-		while (*s1)
-			*str++ = *s1++;
-	}
-	if (s2)
-	{
-		while (*s2)
-			*str++ = *s2++;
-	}
-
-	*str = '\0';
-	return (start);
+		if (i < s1_len)
+			result[i] = s1[i];
+		else
+			result[i] = s2[i - s1_len];
+		i++;
+	}	
+	result[i] = '\0';
+	return (result);
 }
+
+char *ft_substr(char *s, int start, int len)
+{
+    char *res;
+    int i;
+
+    if (!s)
+        return NULL;
+    if (start >= ft_strlen(s))
+    {
+        res = malloc(1);
+        if (!res)
+            return NULL;
+        res[0] = '\0';
+        return res;
+    }
+    if (ft_strlen(s + start) < len)
+        len = ft_strlen(s + start);
+    res = malloc(len + 1);
+    if (!res)
+        return NULL;
+    i = 0;
+    while (i < len)
+    {
+        res[i] = s[start + i];
+        i++;
+    }
+    res[i] = '\0';
+    return res;
+}
+
