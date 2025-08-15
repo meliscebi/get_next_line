@@ -6,7 +6,7 @@
 /*   By: melis <melis@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:05:11 by melis             #+#    #+#             */
-/*   Updated: 2025/08/14 16:41:02 by melis            ###   ########.fr       */
+/*   Updated: 2025/08/15 03:46:54 by melis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 
 char	*get_next_line(int fd);
 int	ft_strlen(char *s);
