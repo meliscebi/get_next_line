@@ -6,7 +6,7 @@
 /*   By: melis <melis@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:05:24 by melis             #+#    #+#             */
-/*   Updated: 2025/08/14 17:03:05 by melis            ###   ########.fr       */
+/*   Updated: 2025/08/15 04:41:06 by melis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ static char	*ft_get_back(char *str)
 	while (str[i] && str[i] != '\n')
 		i++;
 	if (!str[i])
-	{
-		free(str);
-		return (NULL);
-	}
+		return(free(str), NULL);
 	i++;
 	res = ft_substr(str, i, ft_strlen(str + i));
 	free(str);
@@ -47,18 +44,10 @@ static char	*ft_line(char *str)
 	return (ft_substr(str, 0, i));
 }
 
-static char	*ft_free_and_join(char *str, char *string)
-{
-	char	*temp;
-
-	temp = ft_strjoin(str, string);
-	free(str);
-	return (temp);
-}
-
 static char	*ft_read_line(int fd, char *str, int read_bytes)
 {
 	char	*string;
+	char *temp;
 
 	string = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!string)
@@ -67,15 +56,13 @@ static char	*ft_read_line(int fd, char *str, int read_bytes)
 	{
 		read_bytes = read(fd, string, BUFFER_SIZE);
 		if (read_bytes == -1)
-		{
-			free(string);
-			free(str);
-			return (NULL);
-		}
+			return(free(string), free(str), NULL);
 		string[read_bytes] = '\0';
-		str = ft_free_and_join(str, string);
-		if (!str)
+		temp = ft_strjoin(str, string);
+		if (!temp)
 			return(free(string), NULL);
+		free(str);
+		str = temp;
 	}
 	free(string);
 	return (str);
