@@ -6,7 +6,7 @@
 /*   By: melis <melis@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:05:03 by melis             #+#    #+#             */
-/*   Updated: 2025/08/14 04:16:41 by melis            ###   ########.fr       */
+/*   Updated: 2025/08/14 16:53:46 by melis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,33 +67,28 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (result);
 }
 
-char *ft_substr(char *s, int start, int len)
+char	*ft_substr(char *s, int start, int len)
 {
-    char *res;
-    int i;
+	char	*str;
+	int	    i;
 
-    if (!s)
-        return NULL;
-    if (start >= ft_strlen(s))
-    {
-        res = malloc(1);
-        if (!res)
-            return NULL;
-        res[0] = '\0';
-        return res;
-    }
-    if (ft_strlen(s + start) < len)
-        len = ft_strlen(s + start);
-    res = malloc(len + 1);
-    if (!res)
-        return NULL;
-    i = 0;
-    while (i < len)
-    {
-        res[i] = s[start + i];
-        i++;
-    }
-    res[i] = '\0';
-    return res;
+	if (!s)
+		return (NULL);
+	if (start >= ft_strlen(s))
+        return (NULL);
+	if (ft_strlen(s) - start < len)
+		len = ft_strlen(s) - start;
+	str = (char *)malloc(len + 1);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (i < len && s[start + i])
+	{
+		str[i] = s[start + i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }
+
 

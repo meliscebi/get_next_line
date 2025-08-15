@@ -6,7 +6,7 @@
 /*   By: melis <melis@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 01:05:11 by melis             #+#    #+#             */
-/*   Updated: 2025/08/14 04:16:11 by melis            ###   ########.fr       */
+/*   Updated: 2025/08/14 16:41:02 by melis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,5 @@ int	ft_strlen(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(char *s, int c);
 char *ft_substr(char *s, int start, int len);
-
 
 #endif
